@@ -17,7 +17,7 @@ if __name__ == '__main__':
         friendsfile = open("friends.txt", "r")
     except:
         friendsinc = False
-        sys.exit("Error reading file.")
+        print("Friends file not found.")
     if friendsinc == True:
         friends = []
         friendslist = friendsfile.read()
@@ -39,7 +39,7 @@ if __name__ == '__main__':
         favoritesfile = open("favorites.txt", "r")
     except:
         favoritesinc = False
-        print("ERR")
+        print("Favorite servers file not found.")
         #sys.exit("Error reading file.")
     if favoritesinc == True:
         favorites = []
@@ -59,34 +59,22 @@ if __name__ == '__main__':
         #    i += 1
 
     while True:
-        serverset = []
-        i = 0
         req = requests.get(url)
+        
         if req.status_code != 200:
             print("ERROR in getting request.")
             time.sleep(60)
         else:
-            resp = req.text
-            for line in resp.splitlines():
-                if friendsinc == False and favoritesinc == False:
-                    data = line.split("\t")
-                    print(data[0], data[1], data[2])
-                else:
-                    serverset.append(line)
-                
-            #serverlen = len(serverset) 
-            # Was for something, but meh, didn't work.
 
-            #friends and server related stuff            
+            resp = req.text
             if friendsinc == True and favoritesinc == True:
                 friendsAndServer = False
                 ruset = 0
                 naset = 0
                 t1 = False
                 t2 = False
-                
-                for dataset in serverset:
-                    data = dataset.split("\t")
+                for line in resp.splitlines():
+                    data = line.split("\t")
                     while ruset < favoritesc:
                         t1 = data[2] == favorites[ruset]
                         if t1 == True:
@@ -101,78 +89,117 @@ if __name__ == '__main__':
                     
                     if t1 == True and t2 == True:
                         if friendsAndServer == True:
-                            print("{} ::: On :: {} As {} team".format(data[0], data[2], data[1]))
+                            print("With ::: {} ::: On :: {} As {} team".format(data[0], data[2], data[1]))
                         else:
                             print("Friends on Favorite Servers:")
-                            print("{} ::: On :: {} As {} team".format(data[0], data[2], data[1]))
+                            print("With ::: {} ::: On :: {} As {} team".format(data[0], data[2], data[1]))
                             friendsAndServer = True
                             # You could run a system command as an audio notification.
-                        #print(dataset)
-                        serverset.remove(dataset)
                     ruset = 0
                     naset = 0
                     t1 = False
                     t2 = False
 
-            # Friends related stuff
             if friendsinc == True:
                 friendsOnly = False
-                for dataset in serverset:
-                    data = dataset.split("\t")
-                    naset = 0
-                    t2 = False                
+                ruset = 0
+                naset = 0
+                t1 = False
+                t2 = False
+                for line in resp.splitlines():
+                    data = line.split("\t")
+                    if favoritesinc == True:
+                        while ruset < favoritesc:
+                            t1 = data[2] == favorites[ruset]
+                            if t1 == True:
+                                break
+                            ruset += 1
+                        
                     while naset < friendsc:
                         t2 = data[0] == friends[naset]
                         if t2 == True:
                             break
                         naset += 1
                     
-                    if t2 == True:
+                    if t1 == False and t2 == True:
                         if friendsOnly == True:
-                            print("{} ::: On :: {} As {} team".format(data[0], data[2], data[1]))
+                            print("With ::: {} ::: On :: {} As {} team".format(data[0], data[2], data[1]))
                         else:
                             print("Friends found on Servers:")
-                            print("{} ::: On :: {} As {} team".format(data[0], data[2], data[1]))
+                            print("With ::: {} ::: On :: {} As {} team".format(data[0], data[2], data[1]))
                             friendsOnly = True
-                            # You could run a system command for an audio notification.
+                            # You could run a system command as an audio notification.
                         #print(dataset)
-                        serverset.remove(dataset)
+                    ruset = 0
                     naset = 0
+                    t1 = False
                     t2 = False
-                
-            # server related stuff            
+
             if favoritesinc == True:
                 serverOnly = False
                 ruset = 0
+                naset = 0
                 t1 = False
-                for dataset in serverset:
-                    data = dataset.split("\t")
+                t2 = False
+                for line in resp.splitlines():
+                    data = line.split("\t")
                     while ruset < favoritesc:
                         t1 = data[2] == favorites[ruset]
                         if t1 == True:
                             break
                         ruset += 1
-
-                    if t1 == True:
+                    if friendsinc == True:  
+                        while naset < friendsc:
+                            t2 = data[0] == friends[naset]
+                            if t2 == True:
+                                break
+                            naset += 1
+                    
+                    if t1 == True and t2 == False:
                         if serverOnly == True:
-                            print("With ::: {} ::: On :: {} As {} team".format(data[0], data[2], data[1]))
+                            print("{} ::: On :: {} As {} team".format(data[0], data[2], data[1]))
                         else:
                             print("Favorite Servers:")
-                            print("With ::: {} ::: On :: {} As {} team".format(data[0], data[2], data[1]))
+                            print("{} ::: On :: {} As {} team".format(data[0], data[2], data[1]))
                             serverOnly = True
-                        #print(dataset)
-                        serverset.remove(dataset)
+                            # You could run a system command as an audio notification.
                     ruset = 0
+                    naset = 0
                     t1 = False
-
-            print("End of favorites/friends")
-            
-            for dataset in serverset:
-                data = dataset.split("\t")
-                print("With ::: {} ::: On :: {} As {} team".format(data[0], data[2], data[1]))
-                serverset.remove(dataset)
-            print("End of normal data")
+                    t2 = False
+            if friendsinc == True or favoritesinc == True:
+                print("End of favorites/friends")
+                ruset = 0
+                naset = 0
+                t1 = False
+                t2 = False
+                for line in resp.splitlines():
+                    data = line.split("\t")
+                    if favoritesinc == True:
+                        while ruset < favoritesc:
+                            t1 = data[2] == favorites[ruset]
+                            if t1 == True:
+                                break
+                            ruset += 1
+                    if friendsinc == True:
+                        while naset < friendsc:
+                            t2 = data[0] == friends[naset]
+                            if t2 == True:
+                                break
+                            naset += 1
+                    
+                    if t1 == False and t2 == False:
+                        print("{} ::: On :: {} As {} team".format(data[0], data[2], data[1]))
+                    ruset = 0
+                    naset = 0
+                    t1 = False
+                    t2 = False
+                
+                print("End of normal data")
+            else:
+                for line in resp.splitlines():
+                    data = line.split("\t")
+                    print("{} ::: On :: {} As {} team".format(data[0], data[2], data[1]))
             time.sleep(60 * 5)
             os.system("clear")
             # You can use it to run a ping too.
-
