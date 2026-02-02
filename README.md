@@ -11,34 +11,28 @@ Originally this was two simple scripts made as a side project. Known as watcher 
 It's a bit more efficient compare to viewing the stats sites normally, but it isn't as lightweight as expected, even though it runs in the shell and doesn't have a fancy GUI.
 
 ## TODO:
-* Reduce redundant logic
 * Add proxy API utility
 * Don't depend on a single service.
 * Add ability to get live stats on demand.
-* Improve efficiency
-* Improve code readability
 
 ## License:
 **CC0 1.0 Universal**
 
 ## Usage of friends and favorites feature:
-To use the friends feature:
-* Create a text file with the name `friends` and the file extension `.txt`
-* Add in each friend's callsign on a new line.
+BZFObservatory accepts a conf as argument. (Plain text file)
+* In the conf file: Add in each friend's callsign on a new line.
 Example:
 ```
-Sample Player
-Example Player
+[F] Sample Player
+[F] Example Player
 ```
 To use the favorites feature:
-* Create a text file with the name `favorites` and the file extension `.txt`
-* Add in each server by server name and server port on a new line.
+* In the conf file: Add in each server by server name and server port on a new line.
 Example:
 ```
-awesomehosting.example.com:5555
-255.255.255.255:5155
-127.0.0.1:5155
-
+[S] awesomehosting.example.com:5555
+[S] 255.255.255.255:5155
+[S] 127.0.0.1:5155
 ```
 
 Example of results:
@@ -73,4 +67,5 @@ Example of results:
 ## Changelog:
 * **0.0.1** - Initial release
 * **0.0.2** - Refactored code and updated display of listings.
-
+* **0.0.3** - Minor cleanup/refactor
+* **0.0.4** - Refactored rewrite and cleanup
