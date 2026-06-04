@@ -24,10 +24,10 @@ if __name__ == '__main__':
   confval = conf.read()
   for line in confval.splitlines():
     if len(line) >= 7: # [S] Space Username or Server
-      if line[:5] == "[F] ":
-        friends.append(line[5:].lower())
-      if line[:5] == "[S] ":
-        favorites.append(line[5:].lower())
+      if line[:4] == "[F] ":
+        friends.append(line[4:].lower())
+      if line[:4] == "[S] ":
+        favorites.append(line[4:].lower())
   conf.close()
   # Setting standard type
   if len(favorites) >= 1:
@@ -36,7 +36,9 @@ if __name__ == '__main__':
     count += 1
   if count == 3:
     count = 4
+
   # Main loop.
+  os.system("clear")
   while True: 
     req = requests.get(url)
     if req.status_code != 200:
@@ -100,3 +102,4 @@ if __name__ == '__main__':
         Display.clear()
     time.sleep(150) 
     os.system("clear")
+
