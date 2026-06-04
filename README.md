@@ -1,7 +1,7 @@
 # BZFObservatory
 > The observatory for watching the many worlds and those within them.
 
-**In a nutshell:** *BZFObservatory is a CLI app which uses (BZFlag) stats sites API's. It's more efficient in network and memory usage.*
+**In a nutshell:** *BZFObservatory is a CLI app which uses (BZFlag) stats sites API's. It's more efficient in network and memory usage compare to a browser tab.*
 
 BZFObservatory is a utility which performs a query at intervals for data on which servers have players. It then displays the data in a nice format for easy viewing. The biggest feature is a where it highlights favorite server(s) and friend(s). This displays data in the order of friends and favorites, friends, favorites and finally other active servers/players.
 
@@ -69,3 +69,4 @@ Example of results:
 * **0.0.2** - Refactored code and updated display of listings.
 * **0.0.3** - Minor cleanup/refactor
 * **0.0.4** - Refactored rewrite and cleanup
+* **0.0.5** - Fix bug in update
