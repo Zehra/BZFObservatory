@@ -70,3 +70,4 @@ Example of results:
 * **0.0.3** - Minor cleanup/refactor
 * **0.0.4** - Refactored rewrite and cleanup
 * **0.0.5** - Fix bug in update
+* **0.0.6** - Fix bug + refactor
