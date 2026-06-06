@@ -3,6 +3,46 @@ import sys
 import time
 import requests
 
+# Utility functions
+def FriendAndServer(FRIEND, SERVER):
+  if FRIEND == 0 and SERVER == 0: # NOT IN FRIENDS OR IN SERVERS
+    return 3# NOT IN FRIENDS OR IN SERVERS
+  else: # A friend or a favorite server
+    if FRIEND == 1:
+      if SERVER == 1:# Friend & Server
+        return 0 # Friend & Server
+      else: # Friend on regular server
+        return 1  # Friend on regular server
+    else: # Favorite Server
+      return 2 # Favorite Server
+  return -1 # Something went very wrong.
+
+def AddToListType(friend, server, stage, stagecount):
+  status = FriendAndServer(friend, server)
+  if status == 0:
+    if stage == 0:
+      return 0
+  elif status == 1:
+    if stage == 0 and stagecount == 2 or stage == 1 and stagecount == 4:
+      return 1
+  elif status == 2:
+    if stage == 0 and stagecount == 2 or stage == 2 and stagecount == 4:
+      return 2
+  else:
+    if stage == 1 and stagecount == 2 or stage == 3 and stagecount == 4:
+      return 3
+  return -1
+
+def PrefixByAddType(AddType):
+  if AddType == 0:
+    return "===Friends on Favorite Servers:==="
+  elif AddType == 1:
+    return "===Friends found on Servers:==="
+  elif AddType == 2:
+    return "===Favorite Servers:==="
+  else: #if AddToList == 3:     
+    return "===End of favorites/friends==="
+
 if __name__ == '__main__':
   if len(sys.argv) != 2:
     sys.exit('Usage: {0} <conf.txt>'.format(sys.argv[0]))
@@ -39,7 +79,7 @@ if __name__ == '__main__':
 
   # Main loop.
   os.system("clear")
-  while True: 
+  while True:
     req = requests.get(url)
     if req.status_code != 200:
       print("ERROR in getting request.")
@@ -69,29 +109,12 @@ if __name__ == '__main__':
                 if fav == data[2].lower():
                   Server=1
 
-            # Probably the values should be stored in an array or something to lookup.
-            if Friend == 0 and Server == 0:
-              if con == 1 and count == 2 or con == 3 and count == 4:
-                AddToList=3
-            else:
-              if Friend == 1:
-                if Server == 1:# Friend & Server
-                  AddToList = 0
-                else:
-                  if con == 0 and count == 2 or con == 1 and count == 4:# Friend
-                    AddToList=1
-              else: # Server
-                if con == 0 and count == 2 or con == 2 and count == 4:
-                  AddToList=2
+            AddToList = AddToListType(Friend, Server, con, count)
 
             if AddToList != -1:
               if launch == con:
-                if AddToList == 0:
-                  Display.append("===Friends on Favorite Servers:===")
-                if AddToList == 1:
-                  Display.append("===Friends found on Servers:===")
-                if AddToList == 2:
-                  Display.append("===Favorite Servers:===")
+                if AddToList >= 0 and AddToList <= 2:
+                  Display.append(PrefixByAddType(AddToList))
                 if AddToList == 3:
                   if len(Display) >= 1:
                     Display.append("===End of favorites/friends===")
