@@ -80,7 +80,7 @@ if __name__ == '__main__':
   # Main loop.
   os.system("clear")
   while True:
-    req = requests.get(url)
+    req = requests.get(url, timeout=5)
     if req.status_code != 200:
       print("ERROR in getting request.")
     else:
